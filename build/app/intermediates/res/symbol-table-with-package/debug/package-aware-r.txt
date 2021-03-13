@@ -1,4 +1,4 @@
-edu.oregonstate.holtm.wasteagram
+com.example.wasteagram
 attr alpha
 attr font
 attr fontProviderAuthority
