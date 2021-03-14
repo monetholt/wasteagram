@@ -40,6 +40,7 @@ android/gradlew
 android/gradlew.bat
 android/local.properties
 android/**/GeneratedPluginRegistrant.java
+android/app/google-services.json
 
 # iOS/XCode related
 ios/**/*.mode1v3
@@ -66,6 +67,7 @@ ios/Flutter/app.zip
 ios/Flutter/flutter_assets/
 ios/ServiceDefinitions.json
 ios/Runner/GeneratedPluginRegistrant.*
+ios/Runner/GoogleService-Info.plist
 
 # Web related
 lib/generated_plugin_registrant.dart
