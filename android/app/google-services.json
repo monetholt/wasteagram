@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "418825341552",
+    "project_id": "wasteagram-78e8e",
+    "storage_bucket": "wasteagram-78e8e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418825341552:android:932c03bed5d52884f602b5",
+        "android_client_info": {
+          "package_name": "edu.oregonstate.holtm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418825341552-1akovmuqr8a43k7fioc025n81cs3ohvg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKSFZMUbAMTqGRVhF8gMYLGoxg0jWwvVk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418825341552-1akovmuqr8a43k7fioc025n81cs3ohvg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "418825341552-skhj16p7kfq9uk8me89qq8igt7f2cljm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "edu.oregonstate.holtm"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
