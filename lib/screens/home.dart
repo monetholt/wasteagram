@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'share_location_screen.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -7,7 +8,7 @@ class Home extends StatelessWidget {
       appBar: AppBar(
         title: Text("Wasteagram"),
       ),
-      body: Center(child: Text("Welcome!")),
+      body: ShareLocationScreen(),
     );
   }
 }
