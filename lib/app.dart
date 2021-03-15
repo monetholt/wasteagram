@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
+import 'screens/new_post_screen.dart';
+import 'screens/post_detail_screen.dart';
 
 class App extends StatefulWidget {
   const App({Key key}) : super(key: key);
@@ -13,8 +15,8 @@ class AppState extends State<App> {
 
   final routes = {
     '/': (context) => Home(),
-    // '/new_journal': (context) => NewJournalEntry(),
-    // '/journal_detail': (context) => JournalEntryDetail()
+    '/new_post': (context) => NewPostScreen(),
+    '/post_detail': (context) => PostDetailScreen()
   };
 
   @override
