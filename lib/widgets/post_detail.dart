@@ -8,13 +8,37 @@ class PostDetail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(child: Text(post.date.toString())),
-                Center(child: Image.network(post.imageURL)),
-                Center(child: Text('Quantity: ${post.quantity.toString()}')),
-                Center(child: Text('Latitude: ${post.latitude.toString()}, Longitude: ${post.longitude.toString()}')),
-              ]);
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints viewportConstraints) {
+      return SingleChildScrollView(
+          child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: viewportConstraints.maxHeight,
+              ),
+              child:
+                Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  Center(child: Text(post.formattedDate())),
+                  Center(child: displayImage(post.imageURL)),
+                  Center(child: Text('Quantity: ${post.quantity.toString()}')),
+                  Center(
+                      child: Text(
+                          'Latitude: ${post.latitude.toString()}, Longitude: ${post.longitude.toString()}')),
+                ]
+              )));
+    });
+  }
+
+
+  Widget displayImage(url){
+    if(url == null || url == ""){
+      return Container(
+          height: 500,
+          decoration: BoxDecoration(
+            color: Colors.grey,
+          ),
+          child: Center(child: Text("No image"),)
+      );
+    }
+    else return Image.network(post.imageURL, height: 500);
   }
 }

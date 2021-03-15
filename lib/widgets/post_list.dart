@@ -46,11 +46,10 @@ class _PostListState extends State<PostList> {
           itemBuilder: (context, index) {
             var post = posts[index];
             return ListTile(
-              leading: Text(post.quantity.toString()),
-              title: Text(post.date.toString()),
+              title: Text(post.formattedDate()),
+              trailing: Text(post.quantity.toString()),
               enabled: true,
-              onTap: () {
-                //route to view entry
+              onTap: () { //view detail
                 Navigator.of(context)
                     .pushNamed('/post_detail', arguments: posts[index]);
               },
