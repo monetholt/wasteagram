@@ -15,6 +15,8 @@ class Home extends StatelessWidget {
               onPressed: () {
                 Navigator.of(context).pushNamed('/new_post');
               });
-        }));
+        }),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }

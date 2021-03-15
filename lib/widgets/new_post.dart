@@ -116,6 +116,7 @@ class _NewPostState extends State<NewPost> {
   Widget numberInput() {
     return Padding(
         child: TextFormField(
+          keyboardType: TextInputType.number,
           decoration: InputDecoration(
               labelText: 'Quantity', border: OutlineInputBorder()),
           onSaved: (value) {

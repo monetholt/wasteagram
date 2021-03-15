@@ -25,7 +25,7 @@ class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Firestore.instance.collection('posts').snapshots(),
+        stream: Firestore.instance.collection('posts').orderBy('date', descending: true).snapshots(),
         builder: (content, snapshot) {
           if (snapshot.hasData &&
               snapshot.data.documents != null &&
