@@ -1,8 +1,12 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:location/location.dart';
 import 'package:path/path.dart' as Path;
+import '../db/post_dto.dart';
 
 class NewPost extends StatefulWidget {
   @override
@@ -10,17 +14,25 @@ class NewPost extends StatefulWidget {
 }
 
 class _NewPostState extends State<NewPost> {
-  final formKey = GlobalKey<FormState>();
+  LocationData locationData;
+  var locationService = Location();
 
-  int quantity;
+  final formKey = GlobalKey<FormState>();
+  final postFields = PostDTO();
+
   File image;
   final picker = ImagePicker();
 
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    image = File(pickedFile.path);
 
-    setState(() {});
+    if(pickedFile == null) //in case they cancel, go back to list screen
+    {
+      Navigator.of(context).pop();
+    } else {
+      image = File(pickedFile.path);
+      setState(() {});
+    }
   }
 
   Future<String> saveImage() async {
@@ -32,14 +44,52 @@ class _NewPostState extends State<NewPost> {
   }
 
   void addPost() async{
-    final timestamp = DateTime.now();
-    final imageURL = saveImage();
-    print("done!");
+    postFields.imageURL = await saveImage();
+    postFields.date = DateTime.now();
+    postFields.latitude = locationData.latitude;
+    postFields.longitude = locationData.longitude;
+
+    Firestore.instance.collection('posts').add(postFields.toMap());
   }
 
   @override
+  void initState() {
+    super.initState();
+    retrieveLocation();
+  }
+
+  void retrieveLocation() async {
+    try {
+      var _serviceEnabled = await locationService.serviceEnabled();
+      if (!_serviceEnabled) {
+        _serviceEnabled = await locationService.requestService();
+        if (!_serviceEnabled) {
+          print('Failed to enable service. Returning.');
+          return;
+        }
+      }
+
+      var _permissionGranted = await locationService.hasPermission();
+      if (_permissionGranted == PermissionStatus.DENIED) {
+        _permissionGranted = await locationService.requestPermission();
+        if (_permissionGranted != PermissionStatus.GRANTED) {
+          print('Location service permission not granted. Returning.');
+        }
+      }
+
+      locationData = await locationService.getLocation();
+    } on PlatformException catch (e) {
+      print('Error: ${e.toString()}, code: ${e.code}');
+      locationData = null;
+    }
+    locationData = await locationService.getLocation();
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
-    if (image == null) {
+    if(locationData == null){
+      return Center(child: CircularProgressIndicator());
+    } else if (image == null) {
       getImage();
       return Center(child: CircularProgressIndicator());
     } else {
@@ -62,7 +112,7 @@ class _NewPostState extends State<NewPost> {
                       decoration: InputDecoration(
                           labelText: 'Quantity', border: OutlineInputBorder()),
                       onSaved: (value) {
-                        quantity = int.parse(value);
+                        postFields.quantity = int.parse(value);
                       },
                       validator: (value) {
                         if (value.isEmpty ||
@@ -81,9 +131,7 @@ class _NewPostState extends State<NewPost> {
                     if (formKey.currentState.validate()) {
                       //save form
                       formKey.currentState.save();
-
                       addPost();
-
                       Navigator.of(context).pop();
                     }
                   },
