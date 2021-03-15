@@ -25,7 +25,10 @@ class _PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: Firestore.instance.collection('posts').orderBy('date', descending: true).snapshots(),
+        stream: Firestore.instance
+            .collection('posts')
+            .orderBy('date', descending: true)
+            .snapshots(),
         builder: (content, snapshot) {
           if (snapshot.hasData &&
               snapshot.data.documents != null &&
@@ -45,15 +48,21 @@ class _PostListState extends State<PostList> {
           itemCount: posts.length,
           itemBuilder: (context, index) {
             var post = posts[index];
-            return ListTile(
-              title: Text(post.formattedDate()),
-              trailing: Text(post.quantity.toString()),
-              enabled: true,
-              onTap: () { //view detail
-                Navigator.of(context)
-                    .pushNamed('/post_detail', arguments: posts[index]);
-              },
-            );
+            return Semantics(
+                label:
+                    "Click to view the full post, including the location and photo of wasted items.",
+                enabled: true,
+                button: true,
+                child: ListTile(
+                  title: Text(post.formattedDate()),
+                  trailing: Text(post.quantity.toString()),
+                  enabled: true,
+                  onTap: () {
+                    //view detail
+                    Navigator.of(context)
+                        .pushNamed('/post_detail', arguments: posts[index]);
+                  },
+                ));
           });
     } else
       return Center(child: CircularProgressIndicator());

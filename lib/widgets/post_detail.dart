@@ -15,7 +15,7 @@ class PostDetail extends StatelessWidget {
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Text(post.formattedDate()),
               Expanded(child: displayImage(post.imageURL)),
-              Center(child: Text('Quantity: ${post.quantity.toString()}')),
+              Center(child: Text('Number of Items: ${post.quantity.toString()}')),
               Center(
                   child: Text(
                       'Latitude: ${post.latitude.toString()}, Longitude: ${post.longitude.toString()}')),

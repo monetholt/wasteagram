@@ -115,22 +115,26 @@ class _NewPostState extends State<NewPost> {
 
   Widget numberInput() {
     return Padding(
-        child: TextFormField(
-          keyboardType: TextInputType.number,
-          decoration: InputDecoration(
-              labelText: 'Quantity', border: OutlineInputBorder()),
-          onSaved: (value) {
-            postFields.quantity = int.parse(value);
-          },
-          validator: (value) {
-            if (value.isEmpty ||
-                int.tryParse(value) == null ||
-                int.parse(value) < 1) {
-              return 'Please enter a quantity greater than 1';
-            } else
-              return null;
-          },
-        ),
+        child: Semantics(
+            label:
+                "Enter the number of wasted items that are present in the picture you are uploading. The number must be greater than 1",
+            enabled: true,
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                  labelText: 'Number of Items', border: OutlineInputBorder()),
+              onSaved: (value) {
+                postFields.quantity = int.parse(value);
+              },
+              validator: (value) {
+                if (value.isEmpty ||
+                    int.tryParse(value) == null ||
+                    int.parse(value) < 1) {
+                  return 'Please enter a number of Items greater than 1';
+                } else
+                  return null;
+              },
+            )),
         padding: EdgeInsets.all(5.0));
   }
 
@@ -138,18 +142,23 @@ class _NewPostState extends State<NewPost> {
     return SizedBox(
         width: double.infinity,
         height: 100,
-        child: RaisedButton(
-          child: Text('Upload'),
-          color: Colors.purple,
-          textColor: Colors.white,
-          onPressed: () {
-            if (formKey.currentState.validate()) {
-              //save form
-              formKey.currentState.save();
-              addPost();
-              Navigator.of(context).pop();
-            }
-          },
-        ));
+        child: Semantics(
+            label:
+                "Upload the above image of food waste and the number of items present",
+            button: true,
+            enabled: true,
+            child: RaisedButton(
+              child: Text('Upload'),
+              color: Colors.purple,
+              textColor: Colors.white,
+              onPressed: () {
+                if (formKey.currentState.validate()) {
+                  //save form
+                  formKey.currentState.save();
+                  addPost();
+                  Navigator.of(context).pop();
+                }
+              },
+            )));
   }
 }
