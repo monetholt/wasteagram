@@ -26,7 +26,7 @@ class _NewPostState extends State<NewPost> {
   Future getImage() async {
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
-    if(pickedFile == null) //in case they cancel, go back to list screen
+    if (pickedFile == null) //in case they cancel, go back to list screen
     {
       Navigator.of(context).pop();
     } else {
@@ -43,7 +43,7 @@ class _NewPostState extends State<NewPost> {
     return await storageReference.getDownloadURL();
   }
 
-  void addPost() async{
+  void addPost() async {
     postFields.imageURL = await saveImage();
     postFields.date = DateTime.now();
     postFields.latitude = locationData.latitude;
@@ -87,7 +87,7 @@ class _NewPostState extends State<NewPost> {
   }
 
   Widget build(BuildContext context) {
-    if(locationData == null){
+    if (locationData == null) {
       return Center(child: CircularProgressIndicator());
     } else if (image == null) {
       getImage();
@@ -98,45 +98,57 @@ class _NewPostState extends State<NewPost> {
   }
 
   Widget addPostForm() {
+    return Center(
+        child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Form(
+                key: formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(child: Image.file(image)),
+                    Expanded(child: numberInput()),
+                    uploadButton()
+                  ],
+                ))));
+  }
+
+  Widget numberInput() {
     return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Form(
-            key: formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.file(image),
-                Padding(
-                    child: TextFormField(
-                      autofocus: true,
-                      decoration: InputDecoration(
-                          labelText: 'Quantity', border: OutlineInputBorder()),
-                      onSaved: (value) {
-                        postFields.quantity = int.parse(value);
-                      },
-                      validator: (value) {
-                        if (value.isEmpty ||
-                            int.tryParse(value) == null ||
-                            int.parse(value) < 1) {
-                          return 'Please enter a quantity greater than 1';
-                        } else return null;
-                      },
-                    ),
-                    padding: EdgeInsets.all(5.0)),
-                RaisedButton(
-                  child: Text('Save'),
-                  color: Colors.purple,
-                  textColor: Colors.white,
-                  onPressed: () {
-                    if (formKey.currentState.validate()) {
-                      //save form
-                      formKey.currentState.save();
-                      addPost();
-                      Navigator.of(context).pop();
-                    }
-                  },
-                )
-              ],
-            )));
+        child: TextFormField(
+          decoration: InputDecoration(
+              labelText: 'Quantity', border: OutlineInputBorder()),
+          onSaved: (value) {
+            postFields.quantity = int.parse(value);
+          },
+          validator: (value) {
+            if (value.isEmpty ||
+                int.tryParse(value) == null ||
+                int.parse(value) < 1) {
+              return 'Please enter a quantity greater than 1';
+            } else
+              return null;
+          },
+        ),
+        padding: EdgeInsets.all(5.0));
+  }
+
+  Widget uploadButton() {
+    return SizedBox(
+        width: double.infinity,
+        height: 100,
+        child: RaisedButton(
+          child: Text('Upload'),
+          color: Colors.purple,
+          textColor: Colors.white,
+          onPressed: () {
+            if (formKey.currentState.validate()) {
+              //save form
+              formKey.currentState.save();
+              addPost();
+              Navigator.of(context).pop();
+            }
+          },
+        ));
   }
 }
